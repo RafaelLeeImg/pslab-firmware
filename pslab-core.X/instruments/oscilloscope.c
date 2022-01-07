@@ -12,7 +12,7 @@
 static void Capture(void);
 static void ResetTrigger(void);
 static void SetTimeGap(void);
-static void SetCS(uint8_t channel, uint8_t value);
+static void SetCS(uint8_t channel);
 
 response_t OSCILLOSCOPE_CaptureOne(void) {
     SetCHANNELS(0); // Capture one channel.
@@ -131,24 +131,57 @@ response_t OSCILLOSCOPE_SetPGAGain(void) {
 
     SPI_DRIVER_Close();
     SPI_DRIVER_Open(PGA_CONFIG);
-    SetCS(channel, 0);
+    SetCS(channel);
     SPI_DRIVER_ExchangeWord(cmd);
-    SetCS(channel, 1);
+    SetCS(7); // select channel 7 which is not connected to any device
     SPI_DRIVER_Close();
     LED_SetHigh();
 
     return SUCCESS;
 }
 
-static void SetCS(uint8_t channel, uint8_t value) {
+static void SetCS(uint8_t channel) {
     switch(channel) {
+        case 0:
+            CS_CH1_SetLow();
+            CS_CH2_SetLow();
+            CS_CH3_SetLow();
+            break;
         case 1:
-            CS_CH1_Setter = value;
+            CS_CH1_SetHigh();
+            CS_CH2_SetLow();
+            CS_CH3_SetLow();
             break;
         case 2:
-            CS_CH2_Setter = value;
+            CS_CH1_SetLow();
+            CS_CH2_SetHigh();
+            CS_CH3_SetLow();
             break;
-        default:
-            return;
+        case 3:
+            CS_CH1_SetHigh();
+            CS_CH2_SetHigh();
+            CS_CH3_SetLow();
+            break;
+        case 4:
+            CS_CH1_SetLow();
+            CS_CH2_SetLow();
+            CS_CH3_SetHigh();
+            break;
+        case 5:
+            CS_CH1_SetHigh();
+            CS_CH2_SetLow();
+            CS_CH3_SetHigh();
+            break;
+        case 6:
+            CS_CH1_SetLow();
+            CS_CH2_SetHigh();
+            CS_CH3_SetHigh();
+            break;
+        default: // case 7 and other conditions
+            CS_CH1_SetHigh();
+            CS_CH2_SetHigh();
+            CS_CH3_SetHigh();
+            break;
     }
+    return;
 }
