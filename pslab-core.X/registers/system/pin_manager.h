@@ -72,12 +72,12 @@
 #define CS_CH2_SetDigitalInput()       (_TRISA7 = 1)
 #define CS_CH2_SetDigitalOutput()      (_TRISA7 = 0)
 
-#define SDCard_CS_SetHigh()            (_LATB9 = 1)
-#define SDCard_CS_SetLow()             (_LATB9 = 0)
-#define SDCard_CS_Toggle()             (_LATB9 ^= 1)
-#define SDCard_CS_GetValue()           _RB9
-#define SDCard_CS_SetDigitalInput()    (_TRISB9 = 1)
-#define SDCard_CS_SetDigitalOutput()   (_TRISB9 = 0)
+#define CS_CH3_SetHigh()            (_LATB9 = 1)
+#define CS_CH3_SetLow()             (_LATB9 = 0)
+#define CS_CH3_Toggle()             (_LATB9 ^= 1)
+#define CS_CH3_GetValue()           _RB9
+#define CS_CH3_SetDigitalInput()    (_TRISB9 = 1)
+#define CS_CH3_SetDigitalOutput()   (_TRISB9 = 0)
 
 #define CS_SPI_SetHigh()               (_LATC4 = 1)
 #define CS_SPI_SetLow()                (_LATC4 = 0)

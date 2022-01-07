@@ -33,7 +33,7 @@ void PIN_MANAGER_Initialize(void) {
     CS_CH1_SetHigh();
     CS_CH2_SetHigh();
     CS_SPI_SetHigh();
-    SDCard_CS_SetHigh();
+    CS_CH3_SetHigh();
 
     BOOT_SetHigh();
 
@@ -57,7 +57,7 @@ void PIN_MANAGER_Initialize(void) {
     CS_CH1_SetDigitalOutput(); // CH1 chip select
     CS_CH2_SetDigitalOutput(); // CH2 chip select
     CS_SPI_SetDigitalOutput(); // SPI chip select
-    SDCard_CS_SetDigitalOutput(); // SD card chip select
+    CS_CH3_SetDigitalOutput(); // SD card chip select
 
     OSC_CH1_SetDigitalInput(); // CH1
     OSC_CH2_SetDigitalInput(); // CH2
