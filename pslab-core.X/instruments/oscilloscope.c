@@ -122,13 +122,48 @@ response_t OSCILLOSCOPE_ConfigureTrigger(void) {
 response_t OSCILLOSCOPE_SetPGAGain(void) {
     uint8_t channel = UART1_Read();
     uint8_t gain = UART1_Read();
+    uint8_t max5400_resistor;
+    switch (gain) {
+        case 1:
+            gain = 2;
+            max5400_resistor = 128; // register=127.50
+            break;
+        case 2:
+            gain = 4;
+            max5400_resistor = 64; // register=63.75
+            break;
+        case 3:
+            gain = 5;
+            max5400_resistor = 51; // register=51.00
+            break;
+        case 4:
+            gain = 8;
+            max5400_resistor = 32; // register=31.87
+            break;
+        case 5:
+            gain = 10;
+            max5400_resistor = 26; // register=25.50
+            break;
+        case 6:
+            gain = 16;
+            max5400_resistor = 16; // register=15.94
+            break;
+        case 7:
+            gain = 32;
+            max5400_resistor = 8; // register=7.97
+            break;
+        default:
+            gain = 1;
+            max5400_resistor = 255;
+            break;
+    }
     uint16_t write_register = 0x4000;
     uint16_t cmd = write_register | gain;
 
     SPI_DRIVER_Close();
     SPI_DRIVER_Open(PGA_CONFIG);
     SetCS(channel);
-    SPI_DRIVER_ExchangeWord(cmd);
+    SPI_DRIVER_ExchangeByte(max5400_resistor);
     SetCS(7); // select channel 7 which is not connected to any device
     SPI_DRIVER_Close();
     LED_SetHigh();
