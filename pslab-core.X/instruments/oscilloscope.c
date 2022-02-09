@@ -138,42 +138,37 @@ response_t OSCILLOSCOPE_SetPGAGain(void) {
 
 static void SetCS(uint8_t channel) {
     switch(channel) {
-        case 0:
-            CS_CH1_SetLow();
-            CS_CH2_SetLow();
-            CS_CH3_SetLow();
-            break;
         case 1:
-            CS_CH1_SetHigh();
+            CS_CH1_SetLow();
             CS_CH2_SetLow();
             CS_CH3_SetLow();
             break;
         case 2:
-            CS_CH1_SetLow();
-            CS_CH2_SetHigh();
+            CS_CH1_SetHigh();
+            CS_CH2_SetLow();
             CS_CH3_SetLow();
             break;
         case 3:
-            CS_CH1_SetHigh();
+            CS_CH1_SetLow();
             CS_CH2_SetHigh();
             CS_CH3_SetLow();
             break;
         case 4:
-            CS_CH1_SetLow();
-            CS_CH2_SetLow();
-            CS_CH3_SetHigh();
+            CS_CH1_SetHigh();
+            CS_CH2_SetHigh();
+            CS_CH3_SetLow();
             break;
         case 5:
-            CS_CH1_SetHigh();
+            CS_CH1_SetLow();
             CS_CH2_SetLow();
             CS_CH3_SetHigh();
             break;
         case 6:
-            CS_CH1_SetLow();
-            CS_CH2_SetHigh();
+            CS_CH1_SetHigh();
+            CS_CH2_SetLow();
             CS_CH3_SetHigh();
             break;
-        default: // case 7 and other conditions
+        default: // case 0, 7 and other conditions
             CS_CH1_SetHigh();
             CS_CH2_SetHigh();
             CS_CH3_SetHigh();
