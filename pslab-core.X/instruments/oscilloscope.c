@@ -123,6 +123,10 @@ response_t OSCILLOSCOPE_ConfigureTrigger(void) {
     return SUCCESS;
 }
 
+static void UnsetCS() {
+    SetCS(7); // select channel 7 which is not connected to any device
+}
+
 response_t OSCILLOSCOPE_SetPGAGain(void) {
     uint8_t channel = UART1_Read();
     uint8_t gain = UART1_Read();
@@ -156,19 +160,17 @@ response_t OSCILLOSCOPE_SetPGAGain(void) {
             gain = 32;
             max5400_resistor = 8; // register=7.97
             break;
-        default:
+        default: // including case 0
             gain = 1;
             max5400_resistor = 255;
             break;
     }
-    uint16_t write_register = 0x4000;
-    uint16_t cmd = write_register | gain;
 
     SPI_DRIVER_Close();
     SPI_DRIVER_Open(PGA_CONFIG);
     SetCS(channel);
     SPI_DRIVER_ExchangeByte(max5400_resistor);
-    SetCS(7); // select channel 7 which is not connected to any device
+    UnsetCS();
     SPI_DRIVER_Close();
     LED_SetHigh();
 
