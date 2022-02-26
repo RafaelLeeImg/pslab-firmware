@@ -7,16 +7,13 @@
 #include "powersource.h"
 
 response_t POWER_SOURCE_SetPower(void) {
-
-    uint8_t buffer[3];
-    buffer[0] = 0x58 | ((UART1_Read() & 0x03) << 1); // Channel
-    uint16_t power = UART1_ReadInt();
-    buffer[1] = (power >> 8) & 0x9F;
-    buffer[2] = power & 0xFF;
-
-    I2C_InitializeIfNot(I2C_BAUD_RATE_400KHZ, ENABLE_INTERRUPTS);
-    
-    return I2C_BulkWrite(buffer, 3, MCP4728_I2C_DEVICE_ADDRESS);
+    SPI_DRIVER_Close();
+    SPI_DRIVER_Open(PGA_CONFIG);
+    SetCS(channel);
+    int ret = SPI_DRIVER_ExchangeByte(max5400_resistor);
+    SetCS(7); // select channel 7 which is not connected to any device
+    SPI_DRIVER_Close();
+    return ret;
 }
 
 response_t POWER_SOURCE_SetDAC(void) {
