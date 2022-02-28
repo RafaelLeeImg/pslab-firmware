@@ -12,7 +12,8 @@
 static void Capture(void);
 static void ResetTrigger(void);
 static void SetTimeGap(void);
-static void SetCS(uint8_t channel);
+void SetCS(uint8_t channel);
+void UnsetCS();
 
 response_t OSCILLOSCOPE_CaptureOne(void) {
     SetCHANNELS(0); // Capture one channel.
@@ -123,7 +124,7 @@ response_t OSCILLOSCOPE_ConfigureTrigger(void) {
     return SUCCESS;
 }
 
-static void UnsetCS() {
+void UnsetCS() {
     SetCS(7); // select channel 7 which is not connected to any device
 }
 
@@ -177,7 +178,7 @@ response_t OSCILLOSCOPE_SetPGAGain(void) {
     return SUCCESS;
 }
 
-static void SetCS(uint8_t channel) {
+void SetCS(uint8_t channel) {
     switch(channel) {
         case 1:
             CS_CH1_SetLow();
