@@ -9,6 +9,7 @@ typedef enum {
     SDFAST_CONFIG,
     SDSLOW_CONFIG,
     PGA_CONFIG,
+    DAC_CONFIG,
     SPI1_DEFAULT,
 } SPI_MODES;
 
