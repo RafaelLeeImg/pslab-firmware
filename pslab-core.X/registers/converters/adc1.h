@@ -1094,7 +1094,7 @@ extern "C" {
     uint16_t GetTRIGGER_PRESCALER(void);   
 
     void SetCHANNELS(uint8_t);
-    uint8_t GetCHANNELS(void);
+    __inline__ uint8_t GetCHANNELS(void);
 
     void SetSAMPLES_REQUESTED(uint16_t);
     uint16_t GetSAMPLES_REQUESTED(void);

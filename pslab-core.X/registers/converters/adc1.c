@@ -47,7 +47,7 @@ uint16_t GetTRIGGER_PRESCALER(void) { return TRIGGER_PRESCALER; }
 
 static uint8_t CHANNELS = 0;
 void SetCHANNELS(uint8_t V) { CHANNELS = V; }
-uint8_t GetCHANNELS(void) { return CHANNELS; }
+__inline__ uint8_t GetCHANNELS(void) { return CHANNELS; }
 
 static uint16_t SAMPLES_REQUESTED;
 void SetSAMPLES_REQUESTED(uint16_t V) { SAMPLES_REQUESTED = V; }
