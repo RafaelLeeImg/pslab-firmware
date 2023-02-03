@@ -20,14 +20,17 @@ extern void UnsetCS();
 #define MCP4822_ACTIVE 0x1000
 #define MCP4822_SHUTDOWN 0
 
-#define CS_CHANNEL_3 3 // CS3 linked to A2 in 74HC4051
-#define CS_CHANNEL_4 4
+#define CS_CHANNEL_3 2 // CS3 linked to A2 in 74HC4051
+#define CS_CHANNEL_4 3
 
+
+// PVS1 PVS3 share the same channel
+// PCS and PVS2 share the same channel
 static uint16_t channel_mapping_table[4][2] = {
     {CS_CHANNEL_3, MCP4822_CHANNEL_A},
     {CS_CHANNEL_3, MCP4822_CHANNEL_B},
-    {CS_CHANNEL_4, MCP4822_CHANNEL_A},
-    {CS_CHANNEL_4, MCP4822_CHANNEL_B}
+    {CS_CHANNEL_3, MCP4822_CHANNEL_A},
+    {CS_CHANNEL_3, MCP4822_CHANNEL_B}
 };
 
 
@@ -51,12 +54,9 @@ response_t POWER_SOURCE_SetPower(void) {
 }
 
 response_t POWER_SOURCE_SetDAC(void) {
-
     uint8_t address = UART1_Read();
     uint8_t channel = UART1_Read();
     uint8_t power = UART1_ReadInt();
-
-    I2C_InitializeIfNot(I2C_BAUD_RATE_400KHZ, DISABLE_INTERRUPTS);
 
     I2C_StartSignal();
     I2C_Transmit(address);

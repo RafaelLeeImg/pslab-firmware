@@ -6,7 +6,7 @@
 #include "../registers/system/pin_manager.h"
 #include "../registers/system/watchdog.h"
 
-const uint8_t VERSION_HW[] = "PSLab V6"; /** Hardware version. **/
+const uint8_t VERSION_HW[] = "PSLab V5"; /** Hardware version. **/
 
 response_t DEVICE_GetVersion(void) {
     uint8_t i;
@@ -58,3 +58,4 @@ response_t DEVICE_UARTPassThrough(void) {
         if (!i++) LED_Toggle();
     }
 }
+

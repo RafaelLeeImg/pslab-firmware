@@ -69,12 +69,12 @@ static void Capture(void) {
 }
 
 response_t OSCILLOSCOPE_CaptureDMA(void) {
-    uint8_t config = UART1_Read();
+    uint8_t config = UART1_Read(); // 0x83
     SetSAMPLES_REQUESTED(UART1_ReadInt());
     SetDELAY(UART1_ReadInt());  // Wait DELAY / 8 us between samples.
 
-    uint8_t ch0sa = config & 0x0F;
-    uint8_t mode = config & 0x80 ? ADC1_12BIT_DMA_MODE : ADC1_10BIT_DMA_MODE;
+    uint8_t ch0sa = config & 0x0F; // 0x03
+    uint8_t mode = config & 0x80 ? ADC1_12BIT_DMA_MODE : ADC1_10BIT_DMA_MODE; // 12BIT_MODE
 
     SetCHANNELS(0);  // Capture one channel.
     ADC1_SetOperationMode(mode, ch0sa, 0);
@@ -136,7 +136,8 @@ response_t OSCILLOSCOPE_SetPGAGain(void) {
 
     SPI_DRIVER_Close();
     SPI_DRIVER_Open(PGA_CONFIG);
-    SetCS(channel);
+    // select CS_CH0 if channel is 1
+    SetCS(channel-1);
     SPI_DRIVER_ExchangeWord(cmd);
     UnsetCS();
     SPI_DRIVER_Close();
@@ -145,39 +146,45 @@ response_t OSCILLOSCOPE_SetPGAGain(void) {
     return SUCCESS;
 }
 
+// input is 1 indexed, same as pin index in schematic
 void SetCS(uint8_t channel) {
     switch(channel) {
-        case 1:
+        case 0:
             CS_CH1_SetLow();
+            CS_CH2_SetLow();
+            CS_CH3_SetLow();
+            break;
+        case 1:
+            CS_CH1_SetHigh();
             CS_CH2_SetLow();
             CS_CH3_SetLow();
             break;
         case 2:
-            CS_CH1_SetHigh();
-            CS_CH2_SetLow();
+            CS_CH1_SetLow();
+            CS_CH2_SetHigh();
             CS_CH3_SetLow();
             break;
         case 3:
-            CS_CH1_SetLow();
+            CS_CH1_SetHigh();
             CS_CH2_SetHigh();
             CS_CH3_SetLow();
             break;
         case 4:
-            CS_CH1_SetHigh();
-            CS_CH2_SetHigh();
-            CS_CH3_SetLow();
-            break;
-        case 5:
             CS_CH1_SetLow();
             CS_CH2_SetLow();
             CS_CH3_SetHigh();
             break;
-        case 6:
+        case 5:
             CS_CH1_SetHigh();
             CS_CH2_SetLow();
             CS_CH3_SetHigh();
             break;
-        default: // case 0, 7 and other conditions
+        case 6:
+            CS_CH1_SetLow();
+            CS_CH2_SetHigh();
+            CS_CH3_SetHigh();
+            break;
+        default: // case 7
             CS_CH1_SetHigh();
             CS_CH2_SetHigh();
             CS_CH3_SetHigh();

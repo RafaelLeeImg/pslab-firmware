@@ -7,6 +7,7 @@
 
 #include "sd_spi.h"
 
+extern void SetCS(uint8_t channel);
 /******************************************************************************/
 /* SD Configuration                                                           */
 /******************************************************************************/
@@ -17,8 +18,8 @@
 #define SD_NAC_TIMEOUT     (uint32_t)0x40000     //SPI byte times we should wait when performing read operations (should be at least 100ms for SD cards)
 #define SD_WRITE_TIMEOUT   (uint32_t)0xA0000     //SPI byte times to wait before timing out when the media is performing a write operation (should be at least 250ms for SD cards).
 
-#define SD_SPI_ChipSelect() CS_CH3_SetLow()
-#define SD_SPI_ChipDeselect() CS_CH3_SetHigh()
+#define SD_SPI_ChipSelect() SetCS(5)
+#define SD_SPI_ChipDeselect() SetCS(7)
 #define SD_SPI_exchangeByte(data) spiMaster[SDFAST].exchangeByte(data)
 #define SD_SPI_exchangeBlock(data, length) spiMaster[SDFAST].exchangeBlock(data, length)
 #define SD_SPI_master_open(config) spiMaster[config].spiOpen()
